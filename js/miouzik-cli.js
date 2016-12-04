@@ -19,6 +19,8 @@ var currentPortfolio = {};
 
 // Current playlist
 var currentPlayList = [];
+// ID of song being played
+var currentSongUUID = undefined;
 
 // Player controls
 var playing = false;        // State of the audio player
@@ -181,10 +183,12 @@ function playNext() {
   }
   if (currentPlayList.length ===0) {
     shouldPlayNext = false;
+    currentSongUUID = undefined;
     return refreshControls();
   }
 
   var uuid = currentPlayList.shift();
+  currentSongUUID = uuid;
   var song = currentPortfolio[uuid];
   if (!song) {
     console.log("Song not in portfolio", uuid);
@@ -270,7 +274,7 @@ function updateArtistPortfolio(artistName) {
         $('<h2>').text(h2).appendTo($caption);
 
         function newSong(index, song) {
-          var $song = $('<div class="artist-portfolio-album-song"></div>');
+          var $song = $('<div class="artist-portfolio-album-song"></div>').attr('id', song.uuid);
           var $like = $('<div class="artist-portfolio-album-song-like"></div>').appendTo($song);
           var $trackNumber = $('<div class="artist-portfolio-album-song-trackNumber"></div>').text("" + song.trackNumber).appendTo($song);
           var $play = $('<div class="artist-portfolio-album-song-play"></div>').appendTo($song);
@@ -341,6 +345,8 @@ function refreshControls() {
 }
 
 function refreshSong(song) {
+  $('.artist-portfolio-album-song').toggleClass('song-playing', false);
+  $('#' + song.uuid).toggleClass('song-playing', true);
   $song.text(song.title);
   $artist.text(song.artist + "\xa0•\xa0" + song.album);
   var cover = "/miouzik/cover/album/0";

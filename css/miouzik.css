@@ -181,13 +181,16 @@
       background-color: #2687fb;
       color: #fff;
     }
+      .artist-portfolio-album-song.song-playing .artist-portfolio-album-song-trackNumber,
       .artist-portfolio-album-song:hover .artist-portfolio-album-song-trackNumber {
         display: none;
       }
+      .artist-portfolio-album-song.song-playing .artist-portfolio-album-song-play,
       .artist-portfolio-album-song:hover .artist-portfolio-album-song-play {
         background-image: url('../images/play-blue.svg');
         display: flex;
       }
+      .artist-portfolio-album-song.song-playing.artist-portfolio-album-song--selected .artist-portfolio-album-song-play,
       .artist-portfolio-album-song:hover.artist-portfolio-album-song--selected .artist-portfolio-album-song-play {
         background-image: url('../images/play-white.svg');
         display: flex;
@@ -213,7 +216,11 @@
       .artist-portfolio-album-song-play:hover {
         cursor: pointer;
       }
+      .song-playing .artist-portfolio-album-song-title {
+        color: #111;
+      }
       .artist-portfolio-album-song-title {
+        color: #333;
         flex: 1 1;
       }
       .artist-portfolio-album-song-download {
