@@ -134,6 +134,20 @@ We use [Discogs](https://www.discogs.com) to get fetch meta-data on songs and th
 	url: '/miouzik/cover/artist/:artistId'
 	data: { }
 
+### Update a song
+To update song attributes, use a PATCH command. Unset (undefined) attributes will not be changed. Null attributes will be set to null in the database
+
+	type: 'PATCH'
+	url: '/miouzik/song/:uuid'
+	data: { << song attributes >> }
+	dataType: 'json'
+
+### Increment the play count of a song
+
+	type: 'PATCH'
+	url: '/miouzik/song/:uuid/play'
+	data: { }
+	dataType: 'json'
 
 
 ## Pages
