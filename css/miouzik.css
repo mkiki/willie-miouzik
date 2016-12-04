@@ -1,0 +1,359 @@
+/**
+ * willie-miouzik
+ *
+ * (C) Alexandre Morin 2015 - 2016
+ */
+.inner {
+  display: flex;
+  /*flex-direction: column;*/
+  width: 100%;
+}
+/*
+.menu {
+  display: flex;
+  flex-direction: row;
+}
+.infos {
+  display: flex;
+  flex-direction: row;
+}
+*/
+.canvap {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  /*background-color: #eeffee;*/
+  flex: 1;
+}
+.canvas {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  /*background-color: #ffeeee;*/
+}
+
+.header {
+  padding-top: 0;
+  border-bottom: 1px solid #aaa;
+}
+
+/* List of all artists */
+.artist-list {
+  display: flex;
+  /*background-color: #FFE;*/
+  flex: 0 0 300px;
+  border-right: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  flex-direction: column;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-top: 4px;
+  height: 100%;
+}
+.artist-list-item {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: row;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 16px;
+}
+.artist-list-item-avatar {
+  width: 48px;
+  height: 48px;
+  margin-left: 16px;
+  margin-right: 8px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.artist-list-item-avatar>img {
+  -webkit-clip-path: circle(50% at 50% 50%);
+  clip-path: circle(50% at 50% 50%);
+  width: 48px;
+  height: 48px;
+}
+.artist-list-item-name {
+  padding-top: 2px;
+  padding-bottom: 2px;
+  line-height: 48px;
+  flex: 1 1;
+  border-bottom: 1px solid #ddd; 
+  margin-right: 16px;
+}
+
+.artist-list-item:hover {
+  background-color: #2687fb;
+  color: #fff;
+}
+.artist-list-item:hover .artist-list-item-name {
+  border-bottom: 1px solid #2687fb  ; 
+}
+
+
+/* When an artist is selected in the "artist-list" on the left, the selected artist portfolio (= his albums) are displayed on the right side */
+.artist-portfolio {
+  display: flex;
+  /*background-color: #FfE;*/
+  flex: 1 1 auto;
+  border-top: 1px solid #ddd;
+  flex-direction: column;
+  margin-left: 16px;
+  margin-right: 16px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+  .artist-portfolio-header {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ddd; 
+    flex: 0 0 auto;
+  }
+    .artist-portfolio-header>h1 {
+      font-weight: bold;
+      font-size: 24px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    .artist-portfolio-header>h2 {
+      font-weight: normal;
+      font-size: 18px;
+      color: #666;
+      margin-top: 0px;
+      margin-bottom: 10px;
+    }
+
+  .artist-portfolio-album {
+    margin-top: 24px;
+  }
+    .artist-portfolio-album-header {
+      display: flex;
+      flex-direction: row;
+      margin-top: 20px;
+      border-bottom: 1px solid #ddd; 
+    }
+      .artist-portfolio-album-header-cover {
+        width: 48px;
+        height: 48px;
+        margin-left: 16px;
+        margin-right: 24px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        flex: 0 0 48px;
+      }
+        .artist-portfolio-album-header-cover>img {
+          width: 48px;
+          height: 48px;
+        }
+
+      .artist-portfolio-album-header-caption {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1;
+      }
+        .artist-portfolio-album-header-caption>h1 {
+          font-weight: bold;
+          font-size: 24px;
+          line-height: 24px;
+          margin-top: 0px;
+          margin-bottom: 10px;
+          flex: 0 0;
+        }
+        .artist-portfolio-album-header-caption>h2 {
+          font-weight: normal;
+          font-size: 18px;
+          line-height: 18px;
+          color: #666;
+          margin-top: 0px;
+          margin-bottom: 10px;
+          flex: 0 0;
+        }
+
+    .artist-portfolio-album-song {
+      display: flex;
+      flex-direction: row;
+      border-bottom: 1px solid #ddd; 
+      height: 32px;
+      line-height: 32px;
+    }
+    .artist-portfolio-album-song--selected {
+      background-color: #2687fb;
+      color: #fff;
+    }
+      .artist-portfolio-album-song:hover .artist-portfolio-album-song-trackNumber {
+        display: none;
+      }
+      .artist-portfolio-album-song:hover .artist-portfolio-album-song-play {
+        background-image: url('../images/play-blue.svg');
+        display: flex;
+      }
+      .artist-portfolio-album-song:hover.artist-portfolio-album-song--selected .artist-portfolio-album-song-play {
+        background-image: url('../images/play-white.svg');
+        display: flex;
+      }
+
+      .artist-portfolio-album-song-like {
+        margin-right: 4px;
+        flex: 0 0 16px;
+      }
+      .artist-portfolio-album-song-trackNumber {
+        margin-right: 4px;
+        flex: 0 0 32px;
+      }
+      .artist-portfolio-album-song-play {
+        display: none;
+        margin-right: 4px;
+        flex: 0 0 32px;
+        background-image: url('../images/play-blue.svg');
+        background-size: 24px;
+        background-repeat: no-repeat;
+        background-position: -6px 3px;
+      }
+      .artist-portfolio-album-song-play:hover {
+        cursor: pointer;
+      }
+      .artist-portfolio-album-song-title {
+        flex: 1 1;
+      }
+      .artist-portfolio-album-song-download {
+        align-self: flex-end;
+        flex: 0 0 16px;
+      }
+      .artist-portfolio-album-song-duration {
+        align-self: flex-end;
+        flex: 0 0 48px;
+      }
+
+/* Player controls */
+.player-controls {
+  display: flex;
+  flex-direction: row;
+  background-color: #f6f6f6;
+  height: 64px;
+}
+  .play-controls {
+    margin-left: 80px;
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex: 1 0 160px;
+  }
+    .play-controls img.play-previous {
+      margin-right: 20px;
+      cursor: pointer;
+    }
+    .play-controls img.play {
+      cursor: pointer;
+    }
+    .play-controls img.play-next {
+      margin-left: 20px;
+      cursor: pointer;
+    }
+
+  .progress-controls {
+    display: flex;
+    flex-direction: row;
+    flex: 4 1;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-right: 1px solid #e8e8e8;
+    background-color: #fafafa;
+  }
+    .progress-cover {
+      width: 64px;
+      height: 64px;
+    }
+      .progress-cover img {
+        width: 64px;
+        height: 64px;
+      }
+    .progress-inner {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1;
+    }
+      .progress-info {
+        display: flex;
+        flex-direction: row;      
+        margin-bottom: 2px;
+        flex: 1 1;
+      }
+        .progress-info-left {
+          display: flex;
+          flex: 0 0 48px;
+          flex-direction: column;
+          margin-left: 4px;
+        }
+          .progress-shuffle {
+            width: 100%;
+            height: 40px;
+          }
+          .progress-ellapsed {
+          }
+        .progress-info-center {
+          display: flex;
+          margin-left: 8px;
+          margin-right: 8px;
+          flex: 1 1;
+          flex-direction: column;
+        }
+          .progress-song {
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 24px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 4px;
+            margin-top: 4px;
+          }
+          .progress-artist {
+            font-size: 12px;
+            line-height: 14px;
+            color: #888;
+            text-align: center;
+          }
+        .progress-info-right {
+          display: flex;
+          flex: 0 0 48px;
+          flex-direction: column;
+          margin-right: 4px;
+        }
+          .progress-loop {
+            width: 100%;
+            height: 40px;
+          }
+          .progress-remaining {
+          }
+      .progress-indicator {
+        height: 8px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+      }
+        .progress-indicator-ellapsed {
+          background-color: #666;
+          height: 6px;
+          margin-top: 2px;
+          flex: 0 0 0px;
+        }
+        .progress-indicator-current {
+          background-color: #666;
+          height: 8px;
+          flex: 0 0 2px;
+        }
+        .progress-indicator-remaining {
+          height: 6px;
+          margin-top: 2px;
+          background-color: #CCC;
+          flex: 1 1;
+        }
+  .right-controls {
+    margin-right: 80px;
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex: 1 0;
+  }

@@ -1,0 +1,34 @@
+{
+  "name": "willie-miouzik",
+  "version": "1.3.0",
+  "description": "Willie miouzik module",
+  "author": "Alexandre Morin <aggmorin@gmail.com>",
+  "license": "MIT",
+  "private":            true,
+  "scripts": {
+    "debug-mocha": "iron-node node_modules/mocha/bin/_mocha"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mkiki/willie-miouzik.git"
+  },
+  "dependencies": {
+    "disconnect": "^1.0.2",
+    "extend": "~3.0.0",
+    "fs-extra": "^1.0.0",
+    "moment": "~2.10.6",
+    "uuid": "~2.0.3",
+    "wg-log":         "*",
+    "wg-utils":         "*",
+    "wg-scanner":         "*",
+    "wg-database":      "*",
+    "wg-discogs":      "*",
+    "wg-id3": "*",
+    "willie-core": "*",
+    "willie-photos": "*"
+  },
+  "devDependencies": {
+    "mocha": "~2.3.4"
+  }
+}

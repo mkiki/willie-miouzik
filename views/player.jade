@@ -1,0 +1,83 @@
+//- 
+
+html
+  head
+    title!= title
+    link(rel="shortcut icon" type="image/png" href="/core/images/favicon.png?v=2")
+    link(href='https://fonts.googleapis.com/css?family=Raleway', rel='stylesheet', type='text/css')
+
+    link(rel="stylesheet", href="/core/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/core/css/bootstrap-theme.min.css")
+    link(rel="stylesheet", href="/core/css/tipsy.css")
+    link(rel="stylesheet", href="/core/css/core.css")
+    link(rel="stylesheet", href="/miouzik/css/miouzik.css")
+
+    script(src="/core/js/lib/jquery-2.1.1.min.js")
+    script(src="/core/js/lib/bootstrap.min.js")
+    script(src="/core/js/lib/moment.min.js")
+    script(src="/core/js/lib/keyboard.js")
+    script(src="/core/js/lib/jquery.scrollTo.min.js")
+    script(src="/core/js/lib/jquery.tipsy.js")
+
+    script(src="/core/js/utils-cli.js")
+    script(src="/miouzik/js/miouzik-cli.js")
+
+  body
+    div(id="debug", class="debug")
+    div(id="env",   class="env")
+      != env
+
+    div(class="header")
+      audio(id="player")
+
+      div(class="player-controls")
+        div(class="play-controls")
+          img(id="play-previous", class="play-previous", src="/miouzik/images/previous.png")
+          img(id="play", class="play", src="/miouzik/images/play.png")
+          img(id="play-next", class="play-next", src="/miouzik/images/next.png")
+        div(class="volume-controls")
+        div(class="destination-controls")
+        div(class="progress-controls")
+          div(class="progress-cover")
+            img(id="progress-cover-image", src="/miouzik/images/song.png")
+          div(class="progress-inner")
+            div(class="progress-info")
+              div(class="progress-info-left")
+                div(class="progress-shuffle")
+                div(id="progress-ellapsed" class="progress-ellapsed") 0:00
+              div(class="progress-info-center")
+                div(id="progress-song" class="progress-song") Untitled
+                div(id="progress-artist" class="progress-artist") Untitled • Untitled
+              div(class="progress-info-right")
+                div(class="progress-loop")
+                div(id="progress-remaining" class="progress-remaining") 0:00
+            div(id="progress-indicator" class="progress-indicator")
+              div(id="progress-indicator-ellapsed" class="progress-indicator-ellapsed")
+              div(class="progress-indicator-current")
+              div(class="progress-indicator-remaining")
+        div(class="right-controls")
+          select(id="collection-select")
+            option( value=0) Aucun
+            option( value=3) 03 - Allier
+
+    div(class="inner")
+      div(id="menu", class="menu")
+        div(id="menu-hamburger")
+        div(id="menu-commands")
+
+      div(class="canvap")
+        div(id="canvas", class="canvas")
+          div(id="artist-list", class="artist-list")
+          div(id="artist-portfolio", class="artist-portfolio")
+
+        //div(class="pad")
+
+      div(id="infos",  class="infos")
+
+    div(id="copyright",   class="copyright")
+      != copyright
+
+    script.
+      document.userContext = !{JSON.stringify(userContext).replace(/<\//g, "<\\/")}
+    script.
+      document.sideMenu = !{JSON.stringify(sideMenu).replace(/<\//g, "<\\/")}
