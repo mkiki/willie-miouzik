@@ -190,8 +190,20 @@ function playNext() {
     console.log("Song not in portfolio", uuid);
     return playNext();
   }
+  // Start playing
   player.src = '/miouzik/stream/' + uuid;
+  // Record one more play for this song
   refreshSong(song);
+  return ajax({
+    type: 'PATCH',
+    url: '/miouzik/song/' + uuid + '/play',
+    dataType: 'json',
+    success: function(songs) {
+    },
+    error: function(jqxhr, textStatus, error) {
+      flashError("Failed to record new song play", jqxhr.status);
+    }
+  });
 }
 
 /**
