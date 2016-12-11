@@ -157,7 +157,6 @@ function beforeAfter() {
 
   // Called once after executing tests
   after(function(done) {
-    debugger;
     log.warn("Shutting down database");
     return Database.shutdown(function(err, stats) {
       if (err) log.warn({err:err}, "Failed to shutdown database");
