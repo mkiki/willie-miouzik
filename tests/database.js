@@ -10,7 +10,53 @@ const miouzikdb = require('../lib/database.js');
 
 describe('Database', function() {
 
-   helpers.beforeAfter();
+  helpers.beforeAfter();
+
+  /** ================================================================================
+    * Cleanup functions (correct scan errors)
+    * ================================================================================ */
+  describe('Miouzik cleanup functions', function() {
+    it('Should cleanup when same artist has multiple discogs IDs', function(done) {
+      return helpers.asNobody(function(db, userContext) {
+
+        function checkSong(id, title, artist, discogsArtistId, callback) {
+          return miouzikdb.loadSong(db, userContext, id, function(err, song) {
+            assert.ifError(err, 'loadSong failed');
+            assert.equal(title, song.title, 'Bad title');
+            assert.equal(artist, song.artist, 'Bad artist');
+            assert.equal(discogsArtistId, song.discogs.artistId, 'Bad discogs id');
+            return callback();
+          });
+        }
+
+        checkSong('ad3e907d-8da4-4713-aa24-b9d17d6897fb', 'You Shook Me All Night Long', 'AC/DC',   1993710, function() {
+          checkSong('f7a01164-19a8-4096-82cf-563e190bef19', 'Given The Dog A Bone',        'AC/DC',     84752, function() {
+            checkSong('fb86d0db-2a13-4317-b935-d8b1ceca332e', 'Ethereal World',              'Krisiun',   62117, function() {
+              checkSong('f8b875b1-f563-43ff-be90-e99cc546c080', 'Summon',                      'Krisiun', 1399840, function() {
+
+                // Smallest artistId will be kept
+                return miouzikdb.cleanupMultipleDiscogsArtistsIDs(db, userContext, function(err) {
+
+                  checkSong('ad3e907d-8da4-4713-aa24-b9d17d6897fb', 'You Shook Me All Night Long', 'AC/DC',   84752, function() {
+                    checkSong('f7a01164-19a8-4096-82cf-563e190bef19', 'Given The Dog A Bone',        'AC/DC',     84752, function() {
+                      checkSong('fb86d0db-2a13-4317-b935-d8b1ceca332e', 'Ethereal World',              'Krisiun',   62117, function() {
+                        checkSong('f8b875b1-f563-43ff-be90-e99cc546c080', 'Summon',                      'Krisiun', 62117, function() {
+
+                          return done(err);
+                        });
+                      });
+                    });
+                  });
+                });
+
+              });
+            });
+          });
+        });                
+      });
+    });
+  });
+
 
   /** ================================================================================
     * Discogs query cache
@@ -83,7 +129,7 @@ describe('Database', function() {
   });
 
   /** ================================================================================
-    * Discogs query cache
+    * Discogs releases
     * ================================================================================ */
 
   describe('Discogs Releases', function() {

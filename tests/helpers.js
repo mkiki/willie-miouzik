@@ -1,5 +1,5 @@
 /**
- * wg-database - Test utils / helpers
+ * willie-miouzik - Test utils / helpers
  */
 // (C) Alexandre Morin 2015 - 2016
 
@@ -12,6 +12,7 @@ const Database = require('wg-database').Database;
 
 var Module = require('../lib/module.js');
 var willieCoreModule = require('willie-core').Module;
+var williePhotosModule = require('willie-photos').Module;
 var willieMiouzikModule = new Module();
 
 const log = Log.getLogger('willie-miouzik::database::test');
@@ -104,32 +105,57 @@ recreateDatabase = function(callback) {
         if (err) return callback(err);
 
         log.info("Database created");
+
+
+        // Core module
         return willieCoreModule.loadTextFile('sql/update.sql', function(err, update) {
           if (err) return callback(new Exception({module:module.moduleConfig.name}, "Failed to load update.sql file from module", err));
           return willieCoreModule.loadTextFile('sql/data.sql', function(err, data) {
             if (err) return callback(new Exception(undefined, "Failed to load data.sql file from module", err));
-
             var commands = [
               update,
               data,
-              // Core
               "INSERT INTO core_users (id, login, name, canLogin) VALUES ('dec4c80d-e0f4-4bd8-b64d-8425fe04e1ea',   'alex',     'Alexandre Morin',  true)",
             ];
             return db.executeSQL(adminContext, commands, function(err) {
               if (err) return callback(new Exception(undefined, "Failed to execute the database SQL update scripts of module", err));
 
-              return willieMiouzikModule.loadTextFile('sql/update.sql', function(err, update) {
+              // Photos module (needed for fingerprints)
+              return williePhotosModule.loadTextFile('sql/update.sql', function(err, update) {
                 if (err) return callback(new Exception({module:module.moduleConfig.name}, "Failed to load update.sql file from module", err));
-                return willieMiouzikModule.loadTextFile('sql/data.sql', function(err, data) {
+                return williePhotosModule.loadTextFile('sql/data.sql', function(err, data) {
                   if (err) return callback(new Exception(undefined, "Failed to load data.sql file from module", err));
-
                   var commands = [
                     update,
                     data
                   ];
                   return db.executeSQL(adminContext, commands, function(err) {
                     if (err) return callback(new Exception(undefined, "Failed to execute the database SQL update scripts of module", err));
-                    return callback();
+
+                    // Miouzik module
+                    return willieMiouzikModule.loadTextFile('sql/update.sql', function(err, update) {
+                      if (err) return callback(new Exception({module:module.moduleConfig.name}, "Failed to load update.sql file from module", err));
+                      return willieMiouzikModule.loadTextFile('sql/data.sql', function(err, data) {
+                        if (err) return callback(new Exception(undefined, "Failed to load data.sql file from module", err));
+
+                        var commands = [
+                          update,
+                          data,
+
+                          // Two songs with the same artists but with different discogs IDs (see cleanupMultipleDiscogsArtistsIDs)
+                          "INSERT INTO miouzik_songs (id, version, title, artist, album, year, trackNumber, discogsArtistId) VALUES ('ad3e907d-8da4-4713-aa24-b9d17d6897fb', 2, 'You Shook Me All Night Long',  'AC/DC',    'Back In Black',      1980,  7, 1993710);",
+                          "INSERT INTO miouzik_songs (id, version, title, artist, album, year, trackNumber, discogsArtistId) VALUES ('f7a01164-19a8-4096-82cf-563e190bef19', 2, 'Given The Dog A Bone',         'AC/DC',    'Back In Black',      1980,  4, 84752);",
+
+                          "INSERT INTO miouzik_songs (id, version, title, artist, album, year, trackNumber, discogsArtistId) VALUES ('fb86d0db-2a13-4317-b935-d8b1ceca332e', 2, 'Ethereal World',               'Krisiun',  'Works Of Carnage',   2003,  3, 62117);",
+                          "INSERT INTO miouzik_songs (id, version, title, artist, album, year, trackNumber, discogsArtistId) VALUES ('f8b875b1-f563-43ff-be90-e99cc546c080', 2, 'Summon',                       'Krisiun',  'AssassiNation',      2006, 11, 1399840);"
+
+                        ];
+                        return db.executeSQL(adminContext, commands, function(err) {
+                          if (err) return callback(new Exception(undefined, "Failed to execute the database SQL update scripts of module", err));
+                          return callback();
+                        });
+                      });
+                    });
                   });
                 });
               });
